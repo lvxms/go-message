@@ -2,7 +2,6 @@ package message
 
 import (
 	"encoding/base64"
-	"errors"
 	"fmt"
 	"io"
 	"mime/quotedprintable"
@@ -24,7 +23,11 @@ func (u UnknownEncodingError) Error() string {
 // IsUnknownEncoding returns a boolean indicating whether the error is known to
 // report that the encoding advertised by the entity is unknown.
 func IsUnknownEncoding(err error) bool {
-	return errors.As(err, new(UnknownEncodingError))
+	//return errors.As(err, new(UnknownEncodingError))
+	if err == nil {
+		return false
+	}
+	return strings.Contains(err.Error(), "encoding error: ")
 }
 
 func encodingReader(enc string, r io.Reader) (io.Reader, error) {

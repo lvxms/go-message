@@ -1,7 +1,6 @@
 package message
 
 import (
-	"errors"
 	"fmt"
 	"io"
 	"mime"
@@ -21,7 +20,11 @@ func (u UnknownCharsetError) Error() string {
 // IsUnknownCharset returns a boolean indicating whether the error is known to
 // report that the charset advertised by the entity is unknown.
 func IsUnknownCharset(err error) bool {
-	return errors.As(err, new(UnknownCharsetError))
+	//return errors.As(err, new(UnknownCharsetError))
+	if err == nil {
+		return false
+	}
+	return strings.Contains(err.Error(), "unknown charset: ")
 }
 
 // CharsetReader, if non-nil, defines a function to generate charset-conversion
